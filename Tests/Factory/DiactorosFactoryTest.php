@@ -133,6 +133,14 @@ class DiactorosFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(202, $psrResponse->getStatusCode());
         $this->assertEquals(array('2.8'), $psrResponse->getHeader('X-Symfony'));
         $this->assertEquals(array('city=Lille; expires=Wed, 13-Jan-2021 22:23:01 GMT; path=/; httponly'), $psrResponse->getHeader('Set-Cookie'));
+
+        $statusCode = Response::HTTP_UNAUTHORIZED;
+        $reasonPhrase = "You do not have Administrator access";
+        $response->setStatusCode($statusCode, $reasonPhrase);
+        $psrResponse2 = $this->factory->createResponse($response);
+        $this->assertEquals($statusCode, $psrResponse2->getStatusCode());
+        $this->assertEquals($reasonPhrase, $psrResponse2->getReasonPhrase());
+
     }
 
     public function testCreateResponseFromStreamed()
